@@ -74,12 +74,4 @@ app.listen(config.server.port, () => {
 	console.log(`listening on port ${config.server.port} yo`)
 })
 
-const r = require('repl').start({
-	prompt: 'rooftop> ',
-	useGlobal: true
-})
-
-r.on('exit', () => {
-	console.log('\nTerminating...')
-	process.exit()
-})
+const repl = require('./utils/repl')

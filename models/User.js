@@ -3,7 +3,7 @@ const users = require('lowdb')('db-users')
 const bcrypt = require('bcryptjs')
 
 const userDefaults = () => ({
-    access_granted: false,
+    approved: false,
     date_accessed: 0,
     date_created: 0,
     entities: [],
@@ -24,6 +24,11 @@ module.exports = class User {
 
 	get exists () {
 		return !!this.date_created
+	}
+
+	approve () {
+		this.approved = true
+		this.save()
 	}
 
 	register (pass) {
