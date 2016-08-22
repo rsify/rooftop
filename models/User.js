@@ -2,16 +2,14 @@ const _ = require('lodash')
 const users = require('lowdb')('db-users')
 const bcrypt = require('bcryptjs')
 
-const userDefaults = function () {
-	return {
-		access_granted: false,
-		date_accessed: 0,
-		date_created: 0,
-		entities: [],
-		hash: '',
-		subdomain: ''
-	}
-}
+const userDefaults = () => ({
+    access_granted: false,
+    date_accessed: 0,
+    date_created: 0,
+    entities: [],
+    hash: '',
+    subdomain: ''
+})
 
 module.exports = class User {
 	constructor (login) {
@@ -57,4 +55,4 @@ module.exports = class User {
 	verify (pass) {
 		return bcrypt.compareSync(pass, this.hash)
 	}
-}
+};

@@ -3,7 +3,7 @@ const requireAuth = require('../utils/requireAuth')
 
 const router = express.Router()
 
-router.get('/', requireAuth, function (req, res) {
+router.get('/', requireAuth, (req, res) => {
 	res.render('dashboard')
 })
 

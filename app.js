@@ -8,7 +8,7 @@ const User = require('./models/User')
 const app = express()
 
 app.use(require('morgan')('dev', {
-	skip: function (req, res) {
+	skip(req, res) {
 		// skip live page chrome extension 
 		// request spam in terminal
 		return req.url.indexOf('livePage=') !== -1
@@ -25,11 +25,11 @@ app.use(require('express-session')({
 
 app.use(require('express-flash')())
 
-passport.serializeUser(function (user, cb) {
+passport.serializeUser((user, cb) => {
 	cb(null, user.login)
 })
 
-passport.deserializeUser(function (login, cb) {
+passport.deserializeUser((login, cb) => {
 	user = new User(login)
 	if (user.exists) 
 		cb(null, user)
@@ -44,7 +44,7 @@ passport.use(new LocalStrategy({
 		usernameField: 'login',
 		passwordField: 'passwd'
 	},
-	function (login, password, done) {
+	(login, password, done) => {
 		user = new User(login)
 		
 		if (!user.exists) 
@@ -57,20 +57,20 @@ passport.use(new LocalStrategy({
 	}
 ))
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
 	res.locals.user = req.user
 	next()
 })
 
 app.set('view engine', 'pug')
-app.use('/static', express.static(__dirname + '/static'))
+app.use('/static', express.static(`${__dirname}/static`))
 app.use(require('./routes'))
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
 	req.flash('error', '404 not found')
 	res.redirect('/error')
 })
 
-app.listen(config.server.port, function () {
+app.listen(config.server.port, () => {
 	console.log(`listening on port ${config.server.port} yo`)
 })
 
@@ -79,7 +79,7 @@ const r = require('repl').start({
 	useGlobal: true
 })
 
-r.on('exit', function () {
+r.on('exit', () => {
 	console.log('\nTerminating...')
 	process.exit()
 })

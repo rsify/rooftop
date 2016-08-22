@@ -6,7 +6,7 @@ router.use('/auth', require('./auth'))
 router.use('/dashboard', require('./dashboard'))
 router.use('/error', require('./error'))
 
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
 	if (req.user)
 		res.redirect('/dashboard')
 	else
