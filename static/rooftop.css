@@ -7,3 +7,8 @@ body, html {
 	display: flex;
 	align-items: center;
 }
+
+.container-prime {
+	padding-top: 7%;
+	max-width: 400px;
+}

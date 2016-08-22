@@ -19,7 +19,8 @@ router.route('/register')
 		res.render('register')
 	})
 	.post(function (req, res) {
-		res.redirect('/error', {error: 'not implemented'})
+		req.flash('error', 'not implemented')
+		res.redirect('/error')
 	})
 
 router.get('/logout', function (req, res) {

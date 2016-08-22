@@ -1,0 +1,16 @@
+extends base
+
+block title
+	title error | rooftop
+
+block content
+	.container.container-prime
+		.panel.panel-danger
+			.panel-heading something went wrong!
+			.panel-body
+				if messages.error
+					strong error: 
+					| #{messages.error}
+				else
+					| no message
+		a.center-block.text-center(href='/') home page

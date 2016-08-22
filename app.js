@@ -15,11 +15,15 @@ app.use(require('morgan')('dev', {
 	}
 }))
 
+app.use(require('cookie-parser')(config.server.secret))
+
 app.use(require('express-session')({
 	secret: config.server.secret,
 	resave: true,
 	saveUninitialized: true
 }))
+
+app.use(require('express-flash')())
 
 passport.serializeUser(function (user, cb) {
 	cb(null, user.login)
@@ -61,6 +65,10 @@ app.use(function (req, res, next) {
 app.set('view engine', 'pug')
 app.use('/static', express.static(__dirname + '/static'))
 app.use(require('./routes'))
+app.get('*', function (req, res) {
+	req.flash('error', '404 not found')
+	res.redirect('/error')
+})
 
 app.listen(config.server.port, function () {
 	console.log(`listening on port ${config.server.port} yo`)
