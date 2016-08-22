@@ -8,6 +8,13 @@ const User = require('./models/User')
 const app = express()
 
 app.set('view engine', 'pug')
+app.use(require('morgan')('dev', {
+	skip: function (req, res) {
+		// skip live page chrome extension 
+		// request spam in terminal
+		return req.url.indexOf('livePage=') !== -1
+	}
+}))
 
 app.use(require('express-session')({
 	secret: config.server.secret,
