@@ -14,17 +14,17 @@ module.exports = (login) => {
 	// shorter than 65 chars
 	if (login.length > 64) return 'must be shorter than 65 characters'
 
-	// must be ascii/numbers/@/_ only
-	let re = /^[A-Za-z0-9@\._-]+$/
-	if (!re.test(login)) return 'contains illegal characters'
+	// must be ascii/numbers/@/_/. only
+	let re1 = /^[A-Za-z0-9@\._-]+$/
+	if (!re1.test(login)) return 'contains illegal characters'
 
 	// must start with ascii/number
-	let re = /^[A-Za-z0-9]$/
-	if (!re.test(login[0])) 
+	let re2 = /^[A-Za-z0-9]$/
+	if (!re2.test(login[0])) 
 		return 'must start with a letter or a number'
 
 	// must end with ascii/number
-	if (!re.test(login[login.length - 1])) 
+	if (!re2.test(login[login.length - 1])) 
 		return 'must end with a letter or a number'
 
 	return 'valid'
