@@ -1,19 +1,22 @@
 extends base
 
 block title
-	title login | rooftop
+	title register | rooftop
 
 block content
 	.container(style='padding-top: 7%; max-width: 400px')
 		.well
 			.form
-				h4.text-center login to rooftop
+				h4.text-center register to rooftop
 				.form-group
-					label(for='login') login
+					label(for='login') desired login
 					input#login.form-control(type='email')
 				.form-group
 					label(for='passwd') password
 					input#passwd.form-control(type='password')
 				.form-group
+					label(for='passwd2') repeat password
+					input#passwd2.form-control(type='password')
+				.form-group
 					button.btn.btn-default(type='submit') Submit
-				a(href='/auth/register') don't have an account?
+				a(href='/auth/login') but I already have an account!

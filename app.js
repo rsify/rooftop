@@ -7,7 +7,6 @@ const User = require('./models/User')
 
 const app = express()
 
-app.set('view engine', 'pug')
 app.use(require('morgan')('dev', {
 	skip: function (req, res) {
 		// skip live page chrome extension 
@@ -54,6 +53,13 @@ passport.use(new LocalStrategy({
 	}
 ))
 
+app.use(function (req, res, next) {
+	res.locals.user = req.user
+	next()
+})
+
+app.set('view engine', 'pug')
+app.use('/static', express.static(__dirname + '/static'))
 app.use(require('./routes'))
 
 app.listen(config.server.port, function () {
