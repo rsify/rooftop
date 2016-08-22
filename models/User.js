@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const users = require('lowdb')('db-users')
 const bcrypt = require('bcryptjs')
-console.log('hi')
+
 const userDefaults = function () {
 	return {
 		access_granted: false,

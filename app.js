@@ -7,6 +7,8 @@ const User = require('./models/User')
 
 const app = express()
 
+app.set('view engine', 'pug')
+
 app.use(require('express-session')({
 	secret: config.server.secret,
 	resave: true,
@@ -45,7 +47,7 @@ passport.use(new LocalStrategy({
 	}
 ))
 
-app.use('/', require('./routes'))
+app.use(require('./routes'))
 
 app.listen(config.server.port, function () {
 	console.log(`listening on port ${config.server.port} yo`)

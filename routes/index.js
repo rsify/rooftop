@@ -1,10 +1,12 @@
-express = require('express')
-router = new express.Router()
+const express = require('express')
+
+router = express.Router()
+
+router.use('/login', require('./login'))
+router.use('/dashboard', require('./dashboard'))
 
 router.get('/', function (req, res) {
-	global.req = req // for
-	global.res = res // debugging
-	res.send('hello!')
+	res.render('index', {user: req.user})
 })
 
 module.exports = router
