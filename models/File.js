@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const files = require('lowdb')('db-files')
+const files = require('lowdb')('db.json')
 
 module.exports = class File {
 	constructor (id) {

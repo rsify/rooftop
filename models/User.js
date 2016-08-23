@@ -1,6 +1,12 @@
 const _ = require('lodash')
-const users = require('lowdb')('db-users')
 const bcrypt = require('bcryptjs')
+const loginValidator = require('../validators/login')
+const passwordValidator = require('../validators/password')
+
+const db = require('lowdb')('db.json')
+db.defaults({users: []}).value()
+
+const users = db.get('users')
 
 const userDefaults = () => ({
     approved: false,
@@ -8,7 +14,7 @@ const userDefaults = () => ({
     date_created: 0,
     entities: [],
     hash: '',
-    subdomain: ''
+    prefix: ''
 })
 
 module.exports = class User {
@@ -16,23 +22,45 @@ module.exports = class User {
 		this.login = login
 		this.date_accessed = Date.now()
 
-		// pull existing data from db
-		_.extend(this, users.get(login).value())
+		this.retrieve()
 
 		if (this.exists) this.save()
+	}
+
+	static getPending () {
+		return users.filter({approved: false})
+			.sortBy('date_created').reverse().value()
+	}
+
+	static getAllLogins () {
+		let arr = []
+		users.each((u) => {
+			arr.push(u.login)
+		}).value()
+		return arr
 	}
 
 	get exists () {
 		return !!this.date_created
 	}
 
-	approve () {
-		this.approved = true
-		this.save()
+	remove () {
+		if (!this.exists) return false
+		users.remove({login: this.login}).value()
+		return true
 	}
 
 	register (pass) {
 		_.defaults(this, userDefaults())
+
+		// already exists
+		if (users.find({login: this.login}).value()) return false
+
+		// invalid login
+		if (loginValidator(this.login, true) !== 'valid') return false
+		
+		// invalid password
+		if (passwordValidator(pass) !== 'valid') return false	
 
 		this.hash = bcrypt.hashSync(pass)
 
@@ -42,19 +70,31 @@ module.exports = class User {
 		/*
 		try {
 			let re = /^[^A-z]*([A-z]+)/
-			this.subdomain = re.exec(login)[1].substr(0, 5)
+			this.prefix = re.exec(login)[1].substr(0, 5)
 			
 		} catch (e) {
-			this.subdomain = ''
+			this.prefix = ''
 		}
 		*/
 		
 		this.save()
+
+		return true
+	}
+
+	retrieve () {
+		// pull existing data from db
+		_.defaults(this, users.find({login: this.login}).value())
 	}
 
 	save () {
 		// save the 'this' object to db
-		users.get(login).assign(this).value()
+		let q = users.find({login: this.login})
+		global.q = q
+		if (q.value())
+			q.assign(this).value()
+		else
+			users.push(this).value()
 	}
 
 	verify (pass) {
