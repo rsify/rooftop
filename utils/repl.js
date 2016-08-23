@@ -3,12 +3,9 @@ const moment = require('moment')
 
 const User = require('../models/User')
 
-const r = require('repl').start({
-	prompt: 'rooftop> ',
-	useGlobal: true
-})
+const r = require('repl')
 
-_.extend(r.context, {
+let ctx = {
 	help () {
 		console.log(help_text)
 	},
@@ -99,7 +96,13 @@ _.extend(r.context, {
 			} else return false
 		}
 	}
-})
+}
+
+let options = {
+	prompt: 'rooftop> ',
+	useGlobal: true,
+	context: ctx
+}
 
 const help_text = `
 available commands:
@@ -112,9 +115,17 @@ available commands:
 		pending 
 	`
 
-r.on('exit', () => {
-	console.log('\nTerminating...')
-	process.exit()
-})
+module.exports.start = () => {
+	const repl = r.start(options)
 
-module.exports = r
+	repl.on('exit', () => {
+		console.log('\nTerminating...')
+		process.exit()
+	})
+
+	_.extend(repl.context, ctx)
+
+	return repl
+}
+
+module.exports.ctx = () => _.cloneDeep(ctx)

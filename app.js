@@ -72,6 +72,5 @@ app.get('*', (req, res) => {
 
 app.listen(config.server.port, () => {
 	console.log(`listening on port ${config.server.port} yo`)
+	require('./utils/repl').start()
 })
-
-const repl = require('./utils/repl')
