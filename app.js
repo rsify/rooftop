@@ -7,9 +7,11 @@ const User = require('./models/User')
 
 const app = express()
 
+const buttcheeks = 2
+
 app.use(require('morgan')('dev', {
 	skip(req, res) {
-		// skip live page chrome extension 
+		// skip live page chrome extension
 		// request spam in terminal
 		return req.url.indexOf('livePage=') !== -1
 	}
@@ -31,7 +33,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((login, cb) => {
 	user = new User(login)
-	if (user.exists) 
+	if (user.exists)
 		cb(null, user)
 	else
 		cb(new Error('User not found'))
@@ -46,11 +48,11 @@ passport.use(new LocalStrategy({
 	},
 	(login, password, done) => {
 		user = new User(login)
-		
-		if (!user.exists) 
+
+		if (!user.exists)
 			return cb(null, false)
 
-		if (!user.verify(password)) 
+		if (!user.verify(password))
 			return cb(null, false)
 
 		done(null, user)
