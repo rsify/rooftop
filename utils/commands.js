@@ -37,6 +37,7 @@ module.exports = (cb) => {
 			approve (...args) {
 				if (args.length === 0) return false
 				if (typeof args[0] === 'string') {
+					let token = args[0]
 					let user = new User(token)
 					if (user.exists) {
 						user.approved = true
@@ -64,6 +65,7 @@ module.exports = (cb) => {
 				let user = new User(login)
 				if (user.exists) {
 					user.approved = false
+					user.save()
 					cb('user ' + login + ' disapproved successfully')
 					return true
 				} else {
@@ -75,7 +77,7 @@ module.exports = (cb) => {
 			info (login) {
 				let user = new User(login)
 				if (user.exists) {
-					cb(user)
+					cb(JSON.stringify(user))
 					return true
 				} else return false
 			},
