@@ -22,5 +22,3 @@ module.exports.start = () => {
 
 	return repl
 }
-
-module.exports.ctx = () => _.cloneDeep(ctx)
