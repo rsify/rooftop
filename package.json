@@ -3,12 +3,13 @@
   "main": "app.js",
   "author": "nikersify",
   "scripts": {
-    "run": "node app.js",
+    "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "mocha --recursive"
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "express-flash": "0.0.2",

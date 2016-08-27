@@ -15,6 +15,8 @@ app.use(require('morgan')('dev', {
 	}
 }))
 
+app.use(require('body-parser').urlencoded({extended: true}))
+app.use(require('body-parser').json())
 app.use(require('cookie-parser')(config.server.secret))
 
 app.use(require('express-session')({
@@ -30,7 +32,7 @@ passport.serializeUser((user, cb) => {
 })
 
 passport.deserializeUser((login, cb) => {
-	user = new User(login)
+	let user = new User(login)
 	if (user.exists) 
 		cb(null, user)
 	else
@@ -45,13 +47,22 @@ passport.use(new LocalStrategy({
 		passwordField: 'passwd'
 	},
 	(login, password, done) => {
-		user = new User(login)
+		let user = new User(login)
 		
 		if (!user.exists) 
-			return cb(null, false)
+			return done(null, false, {
+				message: 'incorrect username or password'
+			})
 
 		if (!user.verify(password)) 
-			return cb(null, false)
+			return done(null, false, {
+				message: 'incorrect username or password'
+			})
+
+		if (!user.approved && config.users.requireApproval)
+			return done(null, false, {
+				message: 'account not approved'
+			})
 
 		done(null, user)
 	}

@@ -6,14 +6,25 @@ block title
 block content
 	.container.container-prime
 		.well
-			.form
+			form(method='post')
 				h4.text-center login to rooftop
 				.form-group
 					label(for='login') login
-					input#login.form-control(type='email')
+					input#login.form-control(type='text' name='login')
 				.form-group
 					label(for='passwd') password
-					input#passwd.form-control(type='password')
+					input#passwd.form-control(type='password' name='passwd')
+				
+				for msg, type in messages
+					- var _class = 'muted'
+					case type
+						when 'error'
+							- _class = 'danger'
+						when 'info'
+							- _class = 'primary'
+					p.help-block
+						span(class='text-' + _class) #{msg}
+				
 				.form-group
 					button.btn.btn-default(type='submit') Submit
 				a(href='/auth/register') don't have an account?

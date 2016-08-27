@@ -1,4 +1,4 @@
-module.exports = (login, skipExistCheck = false) => {
+module.exports = (login) => {
 	if (!login) return 'must not be empty'
 
 	// at least 4 chars long

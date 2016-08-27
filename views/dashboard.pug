@@ -4,4 +4,8 @@ block title
 	title dashboard | rooftop
 
 block content
+	a(href='/auth/logout') logout
 	h1 turbo dashboard
+	ul
+		for key, prop in user
+			li #{prop}: #{key}
