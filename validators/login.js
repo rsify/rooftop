@@ -1,14 +1,5 @@
-const User = require('../models/User')
-
 module.exports = (login, skipExistCheck = false) => {
 	if (!login) return 'must not be empty'
-
-	if (!skipExistCheck) {
-		let user = new User(login)
-
-		// can't already exist
-		if (user.exists) return 'already taken'
-	}
 
 	// at least 4 chars long
 	if (login.length < 4) return 'must be at least 4 characters'
