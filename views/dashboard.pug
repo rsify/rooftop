@@ -8,4 +8,8 @@ block content
 	h1 turbo dashboard
 	ul
 		for key, prop in user
-			li #{prop}: #{key}
+			li(style='white-space: pre') #{prop}: #{JSON.stringify(key, null, 4)}
+
+	form(action='/dashboard/upload/' enctype='multipart/form-data' method='post')
+		input(type='file' name='file')
+		button(type='submit') upload

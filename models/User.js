@@ -44,6 +44,45 @@ module.exports = class User {
 		return !!this.date_created
 	}
 
+	addEntity (type, path, name, id) {
+		let entity
+		switch (type) {
+			case 'file':
+				entity = {
+					type: 'file',
+					name: name,
+					id: id
+				}
+				break;
+			case 'dir':
+				entity = {
+					type:' dir',
+					name: name,
+					entities: []
+				}
+			default:
+				return false
+		}
+
+		// '' 'dir/' 'dir/ledir/' 'dir/dir/fear/'
+		let pathArr = path.split('/')
+
+		let ref = this.entities
+
+		pathArr.forEach((p) => {
+			if (p == '') {
+				ref.push(entity)
+			} else {
+				if (typeof ref[p] === 'undefined')
+					return false
+				
+				ref = ref[p]
+			}
+		})
+
+		return true
+	}
+
 	remove () {
 		if (!this.exists) return false
 		users.remove({login: this.login}).value()
