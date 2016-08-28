@@ -77,7 +77,7 @@ app.set('view engine', 'pug')
 app.use('/static', express.static(`${__dirname}/static`))
 app.use(require('./routes'))
 app.get('*', (req, res) => {
-	req.flash('error', '404 not found')
+	req.flash('error', `not found (${req.originalUrl})`)
 	res.redirect('/error')
 })
 

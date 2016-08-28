@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 	res.render('dashboard')
 })
 
-router.post('/upload', upload.single('file'), (req, res) => {
+router.post('/files/upload', upload.single('file'), (req, res) => {
 	let user = new User(req.user.login)
 	let id = req.file.filename
 	let name = req.file.originalname
@@ -25,6 +25,23 @@ router.post('/upload', upload.single('file'), (req, res) => {
 	file.owner = user.login
 	file.save()
 
+	res.redirect('/dashboard')
+})
+
+router.post('/files/delete', (req, res) => {
+	if (!req.body.id) {
+		req.flash('error', 'invalid request')
+		return res.redirect('/dashboard')
+	}
+
+	let user = new User(req.user.login)
+
+	if (user.removeEntity('', req.body.id)) {
+		req.flash('success', 'entity deleted')
+	} else {
+		req.flash('error', 'entity doesn\'t exist')
+	}
+	
 	res.redirect('/dashboard')
 })
 

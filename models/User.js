@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const bcrypt = require('bcryptjs')
+const File = require('./File')
 const loginValidator = require('../validators/login')
 const passwordValidator = require('../validators/password')
 
@@ -44,7 +45,7 @@ module.exports = class User {
 		return !!this.date_created
 	}
 
-	addEntity (type, path, name, id) {
+	addEntity (type, dir, name, id) {
 		let entity
 		switch (type) {
 			case 'file':
@@ -65,23 +66,40 @@ module.exports = class User {
 				return false
 		}
 
+		this.entities.push(entity)
+
 		// '' 'dir/' 'dir/ledir/' 'dir/dir/fear/'
-		let pathArr = path.split('/')
-
-		let ref = this.entities
-
-		pathArr.forEach((p) => {
-			if (p == '') {
-				ref.push(entity)
-			} else {
-				if (typeof ref[p] === 'undefined')
-					return false
+		// let dirArr = dir.split('/')
+		
+		// let ref = this.entities
+		//
+		// dirArr.forEach((p) => {
+		// 	if (p == '') {
+		// 		ref.push(entity)
+		// 	} else {
+		// 		if (typeof ref[p] === 'undefined')
+		// 			return false
 				
-				ref = ref[p]
-			}
-		})
+				
+		// 	}
+		// })
 
 		return true
+	}
+
+	removeEntity (dir, id) {
+		// let dirArr = dir.split('/')
+		// 
+		// let ref = this.entities
+
+		let ent = _.find(this.entities, {id: id})
+		if (ent.type === 'file') {
+			let file = new File(ent.id)
+			_.remove(this.entities, ent)
+			return file.delete()
+		} else {
+			return false
+		}
 	}
 
 	remove () {

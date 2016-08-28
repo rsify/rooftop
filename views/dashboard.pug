@@ -6,10 +6,20 @@ block title
 block content
 	a(href='/auth/logout') logout
 	h1 turbo dashboard
+	for message in messages
+		p= message
 	ul
-		for key, prop in user
-			li(style='white-space: pre') #{prop}: #{JSON.stringify(key, null, 4)}
+		for prop, key in user
+			unless key == 'entities'
+				li(style='white-space: pre') #{key}: #{JSON.stringify(prop, null, 4)}
+			else
+				for obj in prop
+					li
+						| #{obj.name} - #{obj.type}
+						form(action='/dashboard/files/delete' method='post')
+							input(type='hidden' name='id' value=obj.id)
+							button(type='submit') delete
 
-	form(action='/dashboard/upload/' enctype='multipart/form-data' method='post')
+	form(action='/dashboard/files/upload' enctype='multipart/form-data' method='post')
 		input(type='file' name='file')
 		button(type='submit') upload

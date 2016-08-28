@@ -4,3 +4,4 @@ drawings.bmp
 node_modules/**
 notes
 uploads/
+npm-debug.log

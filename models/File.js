@@ -10,7 +10,7 @@ const files = db.get('files')
 module.exports = class File {
 	constructor (id) {
 		this.id = id
-
+		this.date_created = Date.now()
 		this.retrieve()
 	}
 
@@ -20,9 +20,9 @@ module.exports = class File {
 
 	delete () {
 		if (!this.exists) return false
-		files.remove({id: this.id}).value()
 		fs.unlinkSync(path.resolve(
-			__dirname, config.files.storageDir, this.id))
+			process.cwd(), config.files.storageDir, this.id))
+		files.remove({id: this.id}).value()
 		return true
 	}
 
