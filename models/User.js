@@ -90,7 +90,6 @@ module.exports = class User {
 	save () {
 		// save the 'this' object to db
 		let q = users.find({login: this.login})
-		global.q = q
 		if (q.value())
 			q.assign(this).value()
 		else

@@ -25,7 +25,6 @@ router.route('/register')
 		res.render('register')
 	})
 	.post((req, res) => {
-		console.log(req.body)
 		let login = req.body.login
 		let passwd1 = req.body.passwd1
 		let passwd2 = req.body.passwd2
@@ -55,6 +54,10 @@ router.route('/register')
 		}
 
 		let user = new User(login)
+		if (user.exists) {
+			req.flash('error', 'login already taken')
+			return res.redirect('/auth/register')
+		}
 		if (!user.register(passwd1)) {
 			req.flash('error', 'something went wrong during registration')
 			return res.redirect('/error')
