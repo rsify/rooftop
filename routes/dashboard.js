@@ -22,6 +22,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
 	user.addEntity('file', '', name, id)
 
 	let file = new File(req.file.filename)
+	file.owner = user.login
 	file.save()
 
 	res.redirect('/dashboard')

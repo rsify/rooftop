@@ -2,7 +2,7 @@ const _ = require('lodash')
 const path = require('path')
 const config = require('../config.json')
 
-const db = require('lowdb')('db.json')
+const db = require('../utils/db')
 db.defaults({files: []}).value()
 
 const files = db.get('files')

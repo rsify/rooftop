@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const loginValidator = require('../validators/login')
 const passwordValidator = require('../validators/password')
 
-const db = require('lowdb')('db.json')
+const db = require('../utils/db')
 db.defaults({users: []}).value()
 
 const users = db.get('users')
@@ -60,6 +60,7 @@ module.exports = class User {
 					name: name,
 					entities: []
 				}
+				break;
 			default:
 				return false
 		}
