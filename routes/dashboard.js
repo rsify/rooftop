@@ -23,6 +23,7 @@ router.post('/files/upload', upload.single('file'), (req, res) => {
 
 	let file = new File(req.file.filename)
 	file.owner = user.login
+	file.name = name
 	file.save()
 
 	res.redirect('/dashboard')
@@ -41,7 +42,7 @@ router.post('/files/delete', (req, res) => {
 	} else {
 		req.flash('error', 'entity doesn\'t exist')
 	}
-	
+
 	res.redirect('/dashboard')
 })
 

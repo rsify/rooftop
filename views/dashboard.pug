@@ -19,6 +19,8 @@ block content
 						form(action='/dashboard/files/delete' method='post')
 							input(type='hidden' name='id' value=obj.id)
 							button(type='submit') delete
+						form(action='/f/'+obj.id)
+							button(type='submit') download
 
 	form(action='/dashboard/files/upload' enctype='multipart/form-data' method='post')
 		input(type='file' name='file')
